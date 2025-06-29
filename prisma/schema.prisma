@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String?       @unique
+  image       String?
+  rooms       RoomMember[]
+  messages    Message[]     @relation("UserMessages")
+  sentRequests FriendRequest[] @relation("Sender")
+  receivedRequests FriendRequest[] @relation("Receiver")
+  status      String        @default("offline") // online, offline
+  createdAt   DateTime      @default(now())
+}
+
+model Room {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  isGroup   Boolean       @default(false)
+  members   RoomMember[]
+  messages  Message[]
+  createdAt DateTime      @default(now())
+}
+
+model RoomMember {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String   @db.ObjectId
+  room    Room     @relation(fields: [roomId], references: [id])
+  roomId  String   @db.ObjectId
+  joinedAt DateTime @default(now())
+}
+
+model Message {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  room      Room      @relation(fields: [roomId], references: [id])
+  roomId    String    @db.ObjectId
+  sender    User      @relation("UserMessages", fields: [senderId], references: [id])
+  senderId  String    @db.ObjectId
+  text      String
+  seenBy    String[]  @default([])
+  createdAt DateTime  @default(now())
+}
+
+model FriendRequest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  sender     User     @relation("Sender", fields: [senderId], references: [id])
+  senderId   String   @db.ObjectId
+  receiver   User     @relation("Receiver", fields: [receiverId], references: [id])
+  receiverId String   @db.ObjectId
+  status     String   @default("pending") // pending, accepted, rejected
+  createdAt  DateTime @default(now())
+}
