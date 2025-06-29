@@ -11,8 +11,6 @@ A real-time chat application built with **Next.js 15 (App Router)**, **Socket.io
 
 - ✅ Real-time private & group chat (Socket.IO)
 - 👤 Google & guest login (NextAuth.js)
-- 🟢 Online/offline user presence
-- 👁️ Message seen/delivered indicators
 - ✍️ Typing indicators
 - 🔒 Secure sessions with JWT
 - 🎨 Framer Motion animations
@@ -69,18 +67,7 @@ SOCKET_URL=http://localhost:3000
 
 ---
 
-### 4. Set up Prisma
-
-```bash
-npx prisma generate
-npx prisma migrate dev --name init
-```
-
-This will create the required tables in your MongoDB database.
-
----
-
-### 5. Run the app
+### 4. Run the app
 
 ```bash
 npm run dev
@@ -88,24 +75,6 @@ npm run dev
 
 App will be available at `http://localhost:3000`
 
----
-
-## 🗃️ Folder Structure
-
-```
-.
-├── app/                     # Next.js App Router pages
-│   ├── chat/               # Chat room and messages UI
-│   ├── friends/            # Friend requests and list
-│   └── layout.tsx          # Global layout
-├── lib/                    # Socket client, utils
-├── prisma/                 # Prisma schema
-├── public/                 # Assets
-├── styles/                # Global styles
-├── .env                   # Environment config
-├── server.js              # Optional custom Socket server
-└── README.md
-```
 
 ---
 
@@ -137,9 +106,9 @@ App will be available at `http://localhost:3000`
 
 ```json
 "scripts": {
-  "dev": "node server.js",
-  "build": "next build",
-  "start": "node server.js"
+   "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
 }
 ```
 
@@ -182,12 +151,6 @@ git push origin feature/your-feature
 ```
 
 Then open a pull request on GitHub!
-
----
-
-## 📄 License
-
-MIT License © 2025 [CodePaila](https://github.com/codepaila)
 
 ---
 
